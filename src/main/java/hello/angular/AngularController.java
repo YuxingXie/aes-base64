@@ -55,11 +55,11 @@ public class AngularController {
         }
         return null;
     }
-    @PutMapping("/api/hero/{id}")
-    public CommonApiResponse updateHero(@RequestBody Hero hero,@PathVariable int id){
-        System.out.println("put hero id "+id);
+    @PutMapping("/api/hero")
+    public CommonApiResponse updateHero(@RequestBody Hero hero){
+
         for(Hero _hero:heroes){
-            if (id==_hero.getId()){
+            if (hero.getId().equals(_hero.getId())){
                 _hero=hero;
                 System.out.println("hero update");
                 return new CommonApiResponse(true,"hero is updated");
