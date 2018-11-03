@@ -21,6 +21,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class AngularController {
     private List<Hero> heroes = new ArrayList<>();
+    private int maxId;
     public AngularController() {
         Hero hero1 =new Hero(11,  "Mr. Nice" );
         Hero hero2 =new Hero(12,  "Narco" );
@@ -42,7 +43,7 @@ public class AngularController {
         heroes.add(hero8);
         heroes.add(hero9);
         heroes.add(hero10);
-
+        maxId=20;
     }
 
     @GetMapping("/api/hero/{id}")
@@ -55,18 +56,40 @@ public class AngularController {
         }
         return null;
     }
+
+    @GetMapping("/api/hero/search")
+    public List<Hero> hero(@RequestParam String name){
+        System.out.println("search hero name: "+name);
+        List<Hero> heroList=null;
+        for(Hero hero:heroes){
+            if (hero.getName().contains(name)){
+                if (heroList==null) heroList =new ArrayList<>();
+                System.out.print(hero.getName()+",");
+               heroList.add(hero);
+            }
+
+        }
+        System.out.println("");
+        return heroList;
+    }
     @PutMapping("/api/hero")
     public CommonApiResponse updateHero(@RequestBody Hero hero){
 
         for(Hero _hero:heroes){
-            if (hero.getId().equals(_hero.getId())){
-                _hero=hero;
+            if (hero.getId()==_hero.getId()){
+                _hero.setName(hero.getName());
                 System.out.println("hero update");
                 return new CommonApiResponse(true,"hero is updated");
             }
         }
-        if (hero==null) return new CommonApiResponse(false,"没找到英雄");
-        return null;
+        return new CommonApiResponse(false,"没找到英雄");
+    }
+    @PostMapping("/api/hero/add")
+    public Hero addHero(@RequestBody Hero hero){
+        hero.setId(++maxId);
+        heroes.add(hero);
+        System.out.println("add hero "+hero.getName());
+        return hero;
     }
     @GetMapping("/api/heroes")
     public List<Hero> heroes(){
