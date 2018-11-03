@@ -45,7 +45,7 @@ public class AngularController {
 
     }
 
-    @RequestMapping("/api/hero/{id}")
+    @GetMapping("/api/hero/{id}")
     public Hero hero(@PathVariable int id){
         System.out.println("request hero id "+id);
         for(Hero hero:heroes){
@@ -55,7 +55,20 @@ public class AngularController {
         }
         return null;
     }
-    @RequestMapping("/api/heroes")
+    @PutMapping("/api/hero/{id}")
+    public CommonApiResponse updateHero(@RequestBody Hero hero,@PathVariable int id){
+        System.out.println("put hero id "+id);
+        for(Hero _hero:heroes){
+            if (id==_hero.getId()){
+                _hero=hero;
+                System.out.println("hero update");
+                return new CommonApiResponse(true,"hero is updated");
+            }
+        }
+        if (hero==null) return new CommonApiResponse(false,"没找到英雄");
+        return null;
+    }
+    @GetMapping("/api/heroes")
     public List<Hero> heroes(){
         System.out.println("request heroes");
         return heroes;
