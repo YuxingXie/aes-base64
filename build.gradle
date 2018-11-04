@@ -26,6 +26,8 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
 
+    //angular 服务端渲染
+    compile group: 'ch.swaechter', name: 'angularj-universal-renderer', version: '0.0.3'
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
